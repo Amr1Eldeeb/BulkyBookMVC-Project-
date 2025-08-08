@@ -1,8 +1,17 @@
+using BulkyWebMVC.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+var connencationString = builder.Configuration.GetConnectionString("DefaultConnection")
+              ?? throw new InvalidOperationException("Connection String is Not Found");
+builder.Services.AddDbContext
+    <ApplicationDbContext>
+    (options => options.UseSqlServer(connencationString));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
