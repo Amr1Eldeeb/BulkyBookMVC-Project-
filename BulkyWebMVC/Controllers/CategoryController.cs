@@ -35,10 +35,60 @@ namespace BulkyWebMVC.Controllers
             {
             _context.Categories.Add(category);
             _context.SaveChanges();
-
+                TempData["success"] = "Category Created Successfully";
             return RedirectToAction("Index","Category");
             }
             return View("Create", category);
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int? id)
+        {
+            if (id is null || id ==0) return NotFound();
+            
+            var category = _context.Categories.FirstOrDefault(x => x.Id == id);
+            if(category is null)return NotFound();
+
+            return View("Edit", category);
+
+        }
+        [HttpPost]
+        public IActionResult Edit(Category category)
+        {
+
+            if(ModelState.IsValid)
+            {
+                _context.Categories.Update(category);
+                _context.SaveChanges();
+                TempData["success"] = "Category Updated Successfully";
+                return RedirectToAction("Index");
+            }
+
+            return View();
+
+        }
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            if (id == 0) return NotFound();
+            Category? category = _context.Categories.FirstOrDefault(y => y.Id == id);
+
+            return View(category);
+        }
+        [HttpPost]
+        public IActionResult Delete(int? id)
+        {
+            Category? category = _context.Categories.FirstOrDefault(y => y.Id == id);
+            if(category is null) return NotFound(); 
+
+          
+                _context.Categories.Remove(category);
+                _context.SaveChanges();
+            TempData["success"] = "Category Deleted Successfully";
+            return RedirectToAction("Index");
+            
+
+            
         }
     }
 }
