@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace BulkyWebMVC.Migrations
+namespace Bulky.DataAccess.Migrations
 {
     /// <inheritdoc />
     public partial class FirstMigrationWithCreateCategoryModel : Migration
