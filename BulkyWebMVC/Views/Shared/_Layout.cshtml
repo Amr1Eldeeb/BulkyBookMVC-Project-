@@ -20,16 +20,36 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
+                    <ul class="navbar-nav flex-grow-1 ">
+                        @* <li class="nav-item">
                             <a class="nav-link " asp-area="Customer" asp-controller="Home" asp-action="Index">Home</a>
+                        </li> *@
+
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-light" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-layout-text-window"></i> Content Management
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" asp-area="Customer" asp-controller="Home" asp-action="Index">
+                                        <i class="bi bi-house"></i> Home
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index">
+                                        <i class="bi bi-list-ul"></i> Categories
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="Customer" asp-controller="Home" asp-action="Privacy">
+                                        <i class="bi bi-shield-lock"></i> Privacy
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                            </ul>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link " asp-area="Customer" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link " asp-area="Admin" asp-controller="Category"asp-action="Index">Categoryies</a>
-                        </li>
+
                     </ul>
                 </div>
             </div>
