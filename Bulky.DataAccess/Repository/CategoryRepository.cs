@@ -19,10 +19,10 @@ namespace Bulky.DataAccess.Repository
 
         }
 
-        public void Save()
-        {
-            _context .SaveChanges();
-        }
+        //public void Save()
+        //{
+        //    _context .SaveChanges();
+        //}
 
         public void Update(Category category)
         {

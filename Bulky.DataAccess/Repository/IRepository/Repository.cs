@@ -37,7 +37,7 @@ namespace Bulky.DataAccess.Repository.IRepository
         {
             IQueryable<T> query = dbSet;
             query.Where(filter);
-          return   query.FirstOrDefault();
+          return   query.FirstOrDefault()!;
 
         }
 

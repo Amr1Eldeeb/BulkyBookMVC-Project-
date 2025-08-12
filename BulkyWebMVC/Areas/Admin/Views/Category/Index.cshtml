@@ -19,7 +19,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var obj in Model.OrderBy(x => x.DisplayOrder))
+                @foreach (var obj in Model)
                 {
                     <tr>
                         <td class="fw-semibold">@obj.Name</td>
