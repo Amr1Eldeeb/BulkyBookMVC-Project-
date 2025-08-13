@@ -9,8 +9,7 @@ namespace BulkyWebMVC.Areas.Admin.Controllers
     [Area("Admin")]
     public class CategoryController : Controller
     {
-      private readonly  ApplicationDbContext _context ;
-        private readonly ICategoryRepository _CategoryRepository;
+   
 
         private readonly IUnitOfWork _unitOfWork;
         public CategoryController(IUnitOfWork unitOfWork)
