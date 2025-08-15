@@ -7,7 +7,7 @@
 namespace Bulky.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class SeedCategoryTAble : Migration
+    public partial class addsedingdata : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,9 +17,9 @@ namespace Bulky.DataAccess.Migrations
                 columns: new[] { "Id", "DisplayOrder", "Name" },
                 values: new object[,]
                 {
-                    { 1, 1, "Actions" },
-                    { 2, 2, "History" },
-                    { 3, 3, "SciFi" }
+                    { 1, 0, "Electronics" },
+                    { 2, 0, "Books" },
+                    { 3, 0, "Furniture" }
                 });
         }
 

@@ -3,6 +3,7 @@ using Bulky.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bulky.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250813042123_addsedingdatOfproduct")]
+    partial class addsedingdatOfproduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -85,10 +88,6 @@ namespace Bulky.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<double>("ListPrice")
                         .HasColumnType("float");
 
@@ -119,7 +118,6 @@ namespace Bulky.DataAccess.Migrations
                             CategoryId = 1,
                             Description = "Specialized machine for cold brew coffee",
                             ISBN = "CM-1011",
-                            ImageUrl = "",
                             ListPrice = 150.0,
                             Price = 140.0,
                             Price100 = 120.0,
@@ -133,7 +131,6 @@ namespace Bulky.DataAccess.Migrations
                             CategoryId = 2,
                             Description = "Classic French press with stainless steel plunger",
                             ISBN = "CM-1012",
-                            ImageUrl = "",
                             ListPrice = 80.0,
                             Price = 75.0,
                             Price100 = 65.0,
@@ -147,7 +144,6 @@ namespace Bulky.DataAccess.Migrations
                             CategoryId = 3,
                             Description = "Coffee machine with built-in smart grinder",
                             ISBN = "CM-1013",
-                            ImageUrl = "",
                             ListPrice = 500.0,
                             Price = 480.0,
                             Price100 = 440.0,
@@ -161,7 +157,6 @@ namespace Bulky.DataAccess.Migrations
                             CategoryId = 1,
                             Description = "Handheld espresso machine for coffee on the go",
                             ISBN = "CM-1014",
-                            ImageUrl = "",
                             ListPrice = 90.0,
                             Price = 85.0,
                             Price100 = 75.0,
@@ -175,7 +170,6 @@ namespace Bulky.DataAccess.Migrations
                             CategoryId = 2,
                             Description = "Machine designed for barista practice and training",
                             ISBN = "CM-1015",
-                            ImageUrl = "",
                             ListPrice = 650.0,
                             Price = 620.0,
                             Price100 = 580.0,
