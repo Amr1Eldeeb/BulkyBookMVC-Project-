@@ -1,6 +1,8 @@
 ﻿using Bulky.DataAccess.Data;
 using Bulky.DataAccess.Repository.IRepository;
 using Bulky.Models.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,12 +12,12 @@ using System.Threading.Tasks;
 
 namespace Bulky.DataAccess.Repository
 {
-    public class CategoryRepository :Repository<Category>, ICategoryRepository
+    public class CategoryRepository : Repository<Category>, ICategoryRepository
     {
- private readonly ApplicationDbContext  _context;
-        public CategoryRepository(ApplicationDbContext context):base(context) 
-        { 
-              _context = context;            
+        private readonly ApplicationDbContext _context;
+        public CategoryRepository(ApplicationDbContext context) : base(context)
+        {
+            _context = context;
 
         }
 
@@ -26,7 +28,17 @@ namespace Bulky.DataAccess.Repository
 
         public void Update(Category category)
         {
-            _context.Categories.Update(category);  
+            _context.Categories.Update(category);
+        }
+        public IEnumerable<SelectListItem> GteSelectList()
+        {
+            return _context.Categories.Select(x => new SelectListItem
+            {
+                Value = x.Id.ToString(),
+                Text = x.Name
+            }
+
+            ).AsNoTracking();
         }
     }
 }

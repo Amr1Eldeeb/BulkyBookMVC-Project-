@@ -1,6 +1,7 @@
 ﻿using Bulky.DataAccess.Data;
 using Bulky.DataAccess.Repository.IRepository;
 using Bulky.Models.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,5 +24,12 @@ namespace Bulky.DataAccess.Repository
             _context.Products.Update(product);
            
         }
+        public IEnumerable<Product>GetAllAsync()
+        {
+            return _context.Products.Include(x=>x.Category).ToList();
+        }
+
+
+
     }
 }

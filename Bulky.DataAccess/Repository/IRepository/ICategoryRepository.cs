@@ -1,4 +1,5 @@
 ﻿using Bulky.Models.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,8 @@ namespace Bulky.DataAccess.Repository.IRepository
 {
     public interface ICategoryRepository:IRepository<Category>
     {
-        void Update(Category category);
+       public  void Update(Category category);
+        public IEnumerable<SelectListItem> GteSelectList();
         //void Save();
     }
 }

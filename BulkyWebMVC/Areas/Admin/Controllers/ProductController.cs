@@ -1,9 +1,11 @@
 ﻿using AspNetCoreGeneratedDocument;
+using Bulky.DataAccess.Data;
+using Bulky.DataAccess.Repository;
 using Bulky.DataAccess.Repository.IRepository;
 using Bulky.Models.Models;
-using Bulky.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using NuGet.Versioning;
 using System.Collections.Generic;
 using System.Reflection.Metadata.Ecma335;
@@ -14,14 +16,18 @@ namespace BulkyWebMVC.Areas.Admin.Controllers
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-
-        public ProductController(IUnitOfWork unitOfWork)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly ApplicationDbContext _context;
+        public ProductController(ApplicationDbContext context,IUnitOfWork unitOfWork,IWebHostEnvironment webHostEnvironment )
         {
+            _webHostEnvironment = webHostEnvironment; // to access on Folders 
             _unitOfWork = unitOfWork;   
+            _context = context; 
         }
         public IActionResult Index()
         {
             IEnumerable<Product> products = _unitOfWork.Product.GetAll();
+
             IEnumerable<SelectListItem>CategoryList = _unitOfWork
                 .Category.GetAll().Select(u=> 
                 new SelectListItem { Text = u.Name ,Value=u.Id.ToString()});
@@ -29,20 +35,36 @@ namespace BulkyWebMVC.Areas.Admin.Controllers
             return View(products);
         }
         [HttpGet]
-        public IActionResult Edit (int Id)
+        public IActionResult Edit (int? Id)
         {
             if(Id == null)return NotFound();
+
             var product = _unitOfWork.Product.Get(x => x.Id == Id);
+            ViewBag.ListOfCategory = _unitOfWork.Category.GteSelectList();
+
             return View(product);
         }
         [HttpPost]
-        public IActionResult Edit(int Id ,Product product)
+        public IActionResult Edit(int Id ,Product product,IFormFile? file)
         {
             if(product is null)
             {
                 return NotFound();
             }
-            _unitOfWork.Product.Update(product);
+
+            string wwwRootpath = _webHostEnvironment.WebRootPath;
+            if (file != null)
+            {
+                string filename = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                string productPath = Path.Combine(wwwRootpath, @"Images\Product");
+                using (var filestream = new FileStream(Path.Combine(productPath, filename), FileMode.Create))
+                {
+                    file.CopyTo(filestream);
+                }
+                product.ImageUrl = @"\images\Product\" + filename;
+            }
+           
+                _unitOfWork.Product.Update(product);
             _unitOfWork.Save();
             TempData["success"] = "Product Updated Successfully";
 
@@ -75,47 +97,56 @@ namespace BulkyWebMVC.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            IEnumerable<SelectListItem> CategoryList = _unitOfWork
-            .Category.GetAll().
-            Select(u => new SelectListItem { Text = u.Name, Value = u.Id.ToString() });
+            var CategoryList = _unitOfWork.Category.GteSelectList();
+ 
+            ViewData["ListOfCategory"] = CategoryList;
+            return View();
 
-        ProductVM productVM = new()
-        {
-            CategoryList = CategoryList,
-            Product = new Product()
-        };
-            return View(productVM);
         }
-
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(ProductVM product)
+        public IActionResult Create(Product product,IFormFile? file)
         {
-
             if (ModelState.IsValid)
             {
-                _unitOfWork.Product.Add(product.Product);
+                string wwwRootpath = _webHostEnvironment.WebRootPath;
+                if(file !=null)
+                {
+                    string filename  = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    string productPath  = Path.Combine(wwwRootpath,@"Images\Product");
+                    using (var filestream = new FileStream(Path.Combine(productPath, filename), FileMode.Create))
+                    {
+                        file.CopyTo(filestream);
+                    }                                       
+                    product.ImageUrl =@"\images\Product\"+filename;
+                }
+                _unitOfWork.Product.Add(product);
                 _unitOfWork.Save();
                 TempData["success"] = "Product Created Successfully";
-                return RedirectToAction("Index");
-            }
-            if (product == null)
-            {
-                product = new ProductVM();
-                product.Product = new Product();
+                return RedirectToAction(nameof(Index));
             }
 
-            product.CategoryList = _unitOfWork.Category.GetAll().Select(u =>
-                new SelectListItem
-                {
-                    Text = u.Name,
-                    Value = u.Id.ToString(),
-                    Selected = (u.Id == product.Product.CategoryId)
-                });
-
-            return View("Create", product);
+            ViewBag.ListOfCategory = _unitOfWork.Category.GteSelectList();
+            return View(product);
         }
+        #region API CALLS
+
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            var objsfromDb = _context.Products.Include(x => x.Category).ToList();
+            return Json(new  { data = objsfromDb});
+
+        }
+
+
+
+
+
+
+
+
+        #endregion
 
     }
 }

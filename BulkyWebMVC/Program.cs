@@ -16,6 +16,7 @@ builder.Services.AddDbContext
     (options => options.UseSqlServer(connencationString));
 builder.Services.AddScoped<ICategoryRepository,CategoryRepository>();  
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
+builder.Services.AddScoped<IProductRepository,ProductRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

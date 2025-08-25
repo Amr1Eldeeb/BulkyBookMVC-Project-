@@ -34,12 +34,11 @@ namespace Bulky.DataAccess.Repository
 
         public T Get(Expression<Func<T, bool>> filter)
         {
-            IQueryable<T> query = dbSet;
-            query.Where(filter);
-          return   query.FirstOrDefault()!;
+            
+          return   dbSet.FirstOrDefault(filter)!;
 
         }
-
+         
         public IEnumerable<T> GetAll()
         {
             IQueryable <T> query = dbSet;   
