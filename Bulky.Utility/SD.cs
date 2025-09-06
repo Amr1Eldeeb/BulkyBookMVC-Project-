@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Bulky.Utility
 {
-    public static  class SD
+    public static class SD
     {
+        public static string RoleAdmin = "Admin";
+        public static string RoleCompany = "CompanyManger";
+        public static string RoleUser = "User";
     }
 }

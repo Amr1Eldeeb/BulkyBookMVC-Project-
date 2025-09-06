@@ -1,5 +1,4 @@
-﻿using AspNetCoreGeneratedDocument;
-using Bulky.DataAccess.Data;
+﻿using Bulky.DataAccess.Data;
 using Bulky.DataAccess.Repository.IRepository;
 using Bulky.Models.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +15,7 @@ namespace BulkyWebMVC.Areas.Admin.Controllers
         {
             _unitOfWork = unitOfWork;
         }
+
         public IActionResult Index()
         {
             IEnumerable<Category> result  = _unitOfWork.Category.GetAll();

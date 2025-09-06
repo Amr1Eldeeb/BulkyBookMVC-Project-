@@ -1,15 +1,12 @@
-﻿using AspNetCoreGeneratedDocument;
-using Bulky.DataAccess.Data;
+﻿using Bulky.DataAccess.Data;
 using Bulky.DataAccess.Repository;
 using Bulky.DataAccess.Repository.IRepository;
 using Bulky.Models.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using NuGet.Versioning;
 using System.Collections.Generic;
 using System.Reflection.Metadata.Ecma335;
-
 namespace BulkyWebMVC.Areas.Admin.Controllers
 {
     [Area("Admin")]
@@ -71,27 +68,42 @@ namespace BulkyWebMVC.Areas.Admin.Controllers
             return RedirectToAction("Index");
              
         }
-        [HttpGet]
-        public IActionResult Delete(int Id)
-        {
-            var product = _unitOfWork.Product.Get(x=>x.Id==Id);
-            if (product is null)
-                return NotFound();
-            return View(product);
-        }
-        [HttpPost]
+        //[HttpGet]
+        //public IActionResult Delete(int Id)
+        //{
+        //    var product = _unitOfWork.Product.Get(x=>x.Id==Id);
+        //    if (product == null)
+        //    {
+        //        return Json(new { success = false, message = "Error while deleting" });
+        //    }
+        //    return View(product);
+        //}
+        [HttpDelete]
         [ActionName("Delete")]
-        public IActionResult DeleteConfirmed(int id)
+        public IActionResult Delete(int? id)
         {
         
             var product = _unitOfWork.Product.Get(x=>x.Id==id);
-            if (product is null)
-                return NotFound();
+            if (product == null)
+            {
+                return Json(new { success = false, message = "Error while deleting" });
+            }
             _unitOfWork.Product.Delete(product);
             _unitOfWork.Save();
+            
             TempData["success"] = "Product Deleted Successfully";
+            string wwwRootPath = _webHostEnvironment.WebRootPath;
 
-            return RedirectToAction("Index");
+            if (!string.IsNullOrEmpty(product.ImageUrl))
+            {
+                string filePath = Path.Combine(wwwRootPath, product.ImageUrl.TrimStart('\\'));
+
+                if (System.IO.File.Exists(filePath))
+                {
+                    System.IO.File.Delete(filePath);
+                }
+            }
+            return Json(new { success = true, message = "Product deleted successfully" });
 
         }
         [HttpGet]
@@ -135,6 +147,7 @@ namespace BulkyWebMVC.Areas.Admin.Controllers
         public IActionResult GetAll()
         {
             var objsfromDb = _context.Products.Include(x => x.Category).ToList();
+
             return Json(new  { data = objsfromDb});
 
         }

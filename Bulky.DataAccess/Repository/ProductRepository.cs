@@ -29,7 +29,10 @@ namespace Bulky.DataAccess.Repository
             return _context.Products.Include(x=>x.Category).ToList();
         }
 
-
-
+        public Product  GetWithInclude(int Id)
+        {
+            return _context.Products.Include(x=>x.Category).SingleOrDefault(x => x.Id == Id)!;
+            
+        }
     }
 }

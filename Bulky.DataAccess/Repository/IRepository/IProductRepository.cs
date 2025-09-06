@@ -11,5 +11,7 @@ namespace Bulky.DataAccess.Repository.IRepository
     public interface IProductRepository : IRepository<Product>
     {
         void Update(Product product);
+        public IEnumerable<Product> GetAllAsync();
+        public Product GetWithInclude(int Id);
     }
 }
